@@ -23,9 +23,8 @@ sections.forEach(sec => observer.observe(sec));
 // ===== Hero rotator =====
 // ===== Hero rotator A (3 detik) =====
 const imagesA = [
-  "images/FotoDian.png",
-  "images/AnimasiSQA2.png",
-  "images/AnimasiSQA.png"
+  "images/kuliah.jpg",
+  "images/Dian.png"
 ];
 const heroImgA = document.getElementById("heroImageA");
 
@@ -65,36 +64,96 @@ if (heroImgB) {
 
 
 // ===== Open CV (adjust your file path) =====
-function openCV(){
+// ====== Open CV ======
+function openCV() {
   window.open("files/CV-SQA-DianSitanggang.pdf", "_blank");
 }
 window.openCV = openCV;
 
-// ===== Reveal on scroll =====
-const io = new IntersectionObserver((entries)=>{
-  entries.forEach(e => {
-    if(e.isIntersecting){
-      e.target.classList.add("show");
-      io.unobserve(e.target);
-    }
-  });
-},{threshold: .15});
-document.querySelectorAll(".reveal").forEach(el => io.observe(el));
+// ====== Project Images ======
+const projectImages = {
+  project1: [
+    'images/projects/TA.png',
+    'images/projects/TA_1.png',
+    'images/projects/TA_3.png',
+    'images/projects/TA_2.png',
+    'images/projects/TA_5.png',
+    'images/projects/TA_4.png',
+    'images/projects/TA_6.png'
+  ],
+  project2: [
+    'images/projects/pa2.jpg',
+    'images/projects/Pa2_1.png',
+    'images/projects/Pa2_2.png', // typo ganti gng → png
+    'images/projects/Pa2_3.jpg',
+    'images/projects/Pa2_4.jpg'
+  ],
+  project3: [
+    'images/projects/PA1_1.png',
+    'images/projects/PA1_2.png',
+    'images/projects/PA1_3.png',
+    'images/projects/statistikPA1.png'
+  ],
+  project4: [
+    'images/projects/Teknet_1.png',
+    'images/projects/Teknet_2.png',
+    'images/projects/Teknet_3.png',
+    'images/projects/Teknet_4.png',
+    'images/projects/Teknet_5.png',
+    'images/projects/Teknet_6.png'
+  ],
+  project5: [
+    'images/projects/p_1.png',
+    'images/projects/p_2.png',
+    'images/projects/p_3.png',
+    'images/projects/p_4.png',
+    'images/projects/p_5.png'
+  ]
+};
 
-//eduya
-// Ambil semua education item
-const eduItems = document.querySelectorAll(".edu");
+let currentIndex = 0;
+let currentProject = "";
 
-eduItems.forEach(item => {
-  // efek saat mouse masuk
-  item.addEventListener("mouseenter", () => {
-    item.classList.add("hovered");
-  });
+// ====== Modal Gallery ======
+function openGallery(project, index = 0) {
+  currentProject = project;
+  currentIndex = index;
+  document.getElementById("photoModal").style.display = "flex";
+  document.getElementById("modalImage").src =
+    projectImages[currentProject][currentIndex];
+}
 
-  // efek saat mouse keluar
-  item.addEventListener("mouseleave", () => {
-    item.classList.remove("hovered");
-  });
-});
+function closeGallery() {
+  document.getElementById("photoModal").style.display = "none";
+}
 
+function changeSlide(n) {
+  const images = projectImages[currentProject];
+  currentIndex += n;
+  if (currentIndex < 0) currentIndex = images.length - 1;
+  if (currentIndex >= images.length) currentIndex = 0;
+  document.getElementById("modalImage").src = images[currentIndex];
+}
 
+// Tutup modal klik di luar gambar
+window.onclick = function (event) {
+  const modal = document.getElementById("photoModal");
+  if (event.target === modal) {
+    closeGallery();
+  }
+};
+
+// ====== Reveal on Scroll ======
+const io = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((e) => {
+      if (e.isIntersecting) {
+        e.target.classList.add("show");
+        io.unobserve(e.target);
+      }
+    });
+  },
+  { threshold: 0.15 }
+);
+
+document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
